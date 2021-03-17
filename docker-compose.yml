@@ -9,8 +9,11 @@ services:
       dockerfile: docker/backend_warehouse/Dockerfile
     networks:
       - webnet
+      - nginx_network
     expose:
       - 8000
+    environment:
+      DATABASE_PORT: '5432'
     env_file:
       - ./config/.env
     restart: on-failure
@@ -29,8 +32,11 @@ services:
         dockerfile: docker/backend_shop/Dockerfile
       networks:
         - webnet
+        - nginx_network
       expose:
         - 6000
+      environment:
+        DATABASE_PORT: '5432'
       env_file:
         - ./config/.env
       restart: on-failure
@@ -41,5 +47,26 @@ services:
         timeout: 5s
         retries: 2
 
+
+      nginx:
+        container_name: nginx
+        build:
+          context: .
+          dockerfile: ./docker/nginx/Dockerfile
+        restart: on-failure
+        networks:
+          - nginx_network
+        ports:
+          - 80:80
+        depends_on:
+          - warehouse
+          - shop
+        healthcheck:
+          test: [ "CMD-SHELL", "ps ax", "|" ,"grep -v grep", "|" ,"grep nginx",  "||", "exit 1" ]
+          interval: 30s
+          timeout: 10s
+          retries: 3
+
 networks:
   webnet:
+  nginx_network:

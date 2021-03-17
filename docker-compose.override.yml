@@ -1,6 +1,26 @@
 version: "3.8"
 
 services:
+  db:
+    container_name: db
+    image: postgres
+    restart: on-failure
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - webnet
+    expose:
+      - 5432
+    env_file: ./config/.env
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '123123'
+      POSTGRES_DB: 'dev_db'
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   warehouse: &warehouse
     container_name: warehouse
@@ -30,3 +50,15 @@ services:
     environment:
       DJANGO_DEBUG: 1
     command: sh /runserver.sh
+
+
+  nginx:
+    container_name: nginx
+    build:
+      target: development_build
+    ports:
+      - 8025:8025
+      - 5555:5555
+
+  volumes:
+    db-data:
