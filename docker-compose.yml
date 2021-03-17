@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+
+  warehouse: &warehouse
+    container_name: warehouse
+    build:
+      context: .
+      dockerfile: docker/backend_warehouse/Dockerfile
+    networks:
+      - webnet
+    expose:
+      - 8000
+    env_file:
+      - ./config/.env
+    restart: on-failure
+    command: sh /runserver.sh
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://0.0.0.0:8000/admin/login/" ]
+      interval: 1m
+      timeout: 5s
+      retries: 2
+
+
+    shop: &shop
+      container_name: shop
+      build:
+        context: .
+        dockerfile: docker/backend_shop/Dockerfile
+      networks:
+        - webnet
+      expose:
+        - 6000
+      env_file:
+        - ./config/.env
+      restart: on-failure
+      command: sh /runserver.sh
+      healthcheck:
+        test: [ "CMD", "curl", "--fail", "http://0.0.0.0:8000/admin/login/" ]
+        interval: 1m
+        timeout: 5s
+        retries: 2
+
+networks:
+  webnet:
