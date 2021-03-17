@@ -25,47 +25,47 @@ services:
       retries: 2
 
 
-    shop: &shop
-      container_name: shop
-      build:
-        context: .
-        dockerfile: docker/backend_shop/Dockerfile
-      networks:
-        - webnet
-        - nginx_network
-      expose:
-        - 6000
-      environment:
-        DATABASE_PORT: '5432'
-      env_file:
-        - ./config/.env
-      restart: on-failure
-      command: sh /runserver.sh
-      healthcheck:
-        test: [ "CMD", "curl", "--fail", "http://0.0.0.0:8000/admin/login/" ]
-        interval: 1m
-        timeout: 5s
-        retries: 2
+  shop: &shop
+    container_name: shop
+    build:
+      context: .
+      dockerfile: docker/backend_shop/Dockerfile
+    networks:
+      - webnet
+      - nginx_network
+    expose:
+      - 6000
+    environment:
+      DATABASE_PORT: '5432'
+    env_file:
+      - ./config/.env
+    restart: on-failure
+    command: sh /runserver.sh
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "http://0.0.0.0:8000/admin/login/" ]
+      interval: 1m
+      timeout: 5s
+      retries: 2
 
 
-      nginx:
-        container_name: nginx
-        build:
-          context: .
-          dockerfile: ./docker/nginx/Dockerfile
-        restart: on-failure
-        networks:
-          - nginx_network
-        ports:
-          - 80:80
-        depends_on:
-          - warehouse
-          - shop
-        healthcheck:
-          test: [ "CMD-SHELL", "ps ax", "|" ,"grep -v grep", "|" ,"grep nginx",  "||", "exit 1" ]
-          interval: 30s
-          timeout: 10s
-          retries: 3
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    restart: on-failure
+    networks:
+      - nginx_network
+    ports:
+      - 80:80
+    depends_on:
+      - warehouse
+      - shop
+    healthcheck:
+      test: [ "CMD-SHELL", "ps ax", "|" ,"grep -v grep", "|" ,"grep nginx",  "||", "exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 networks:
   webnet:

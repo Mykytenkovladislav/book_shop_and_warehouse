@@ -60,5 +60,5 @@ services:
       - 8025:8025
       - 5555:5555
 
-  volumes:
-    db-data:
+volumes:
+  db-data:
