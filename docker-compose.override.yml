@@ -30,7 +30,7 @@ services:
       args:
         DJANGO_ENV: 'dev'
     volumes:
-      - ./backend_warehouse:/code
+      - ./warehouse:/code
       - ./config:/config
     environment:
       DJANGO_DEBUG: 1
@@ -45,7 +45,7 @@ services:
       args:
         DJANGO_ENV: 'dev'
     volumes:
-      - ./backend_shop:/code
+      - ./shop:/code
       - ./config:/config
     environment:
       DJANGO_DEBUG: 1

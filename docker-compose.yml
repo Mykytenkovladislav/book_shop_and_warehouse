@@ -57,7 +57,8 @@ services:
     networks:
       - nginx_network
     ports:
-      - 80:80
+      - 8000:80
+      - 6000:60
     depends_on:
       - warehouse
       - shop
