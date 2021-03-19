@@ -7,4 +7,4 @@ DATABASES = {
     "default": env.db("DATABASE_URL"),
 }
 
-DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
+DATABASES["default"]["ENGINE"] = "django.db.backends.postgresql_psycopg2"

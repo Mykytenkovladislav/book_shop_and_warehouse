@@ -28,7 +28,9 @@ RUN apt-get -y install \
     libxslt-dev \
     libgdal-dev \
     libproj-dev \
-    libgeos-dev
+    libgeos-dev \
+    libpq-dev \
+    python-dev
 
 # Install python dependencies
 RUN pip install -U --no-cache-dir pip \

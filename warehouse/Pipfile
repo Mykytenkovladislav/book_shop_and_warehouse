@@ -8,6 +8,7 @@ django = "*"
 ipython = "*"
 django-environ = "*"
 django-split-settings = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
