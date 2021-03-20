@@ -9,6 +9,8 @@ ipython = "*"
 django-environ = "*"
 django-split-settings = "*"
 psycopg2-binary = "*"
+django-debug-toolbar = "*"
+django-silk = "*"
 
 [dev-packages]
 

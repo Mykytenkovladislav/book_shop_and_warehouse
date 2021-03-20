@@ -15,7 +15,7 @@ services:
     environment:
       DATABASE_PORT: '5432'
     env_file:
-      - ./config/.env
+      - warehouse/config/.env
     restart: on-failure
     command: sh /runserver.sh
     healthcheck:

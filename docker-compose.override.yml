@@ -45,7 +45,6 @@ services:
       - ./config:/config
     environment:
       DJANGO_DEBUG: 1
-      DATABASE_URL: 'postgresql://postgres:123123@db:5432/warehouse_db'
       DATABASE_HOST: 'db'
     command: sh /runserver.sh
 
