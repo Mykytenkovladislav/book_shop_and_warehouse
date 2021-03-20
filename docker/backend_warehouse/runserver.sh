@@ -13,6 +13,8 @@ echo "ENV is $DJANGO_ENV"
 if [ "$DJANGO_ENV" = 'dev' ]; then
   echo "Run manage.py migrate"
   python /code/manage.py migrate --noinput
+  echo "Run manage.py collectstatic"
+  python /code/manage.py collectstatic --noinput
 #  echo "Flushing database"
 #  python /code/manage.py flush --noinput
 #  echo "Importing test data"
