@@ -14,7 +14,8 @@ class Book(models.Model):
     summary = models.TextField(_("summary"), max_length=1000, help_text=_("Enter a brief description of the book"))
     isbn = models.CharField(_("ISBN"), max_length=13, help_text=_("13 character ISBN number"))
     language = models.CharField(_("language"), max_length=20)
-    price = models.CharField(_('price'), help_text='Book price')
+    genre = models.CharField(_('genre'), max_length=200)
+    price = models.CharField(_('price'), max_length=20, help_text='Book price')
 
     class Meta:
         ordering = ['title', 'author']
@@ -33,7 +34,7 @@ class Order(models.Model):
         DONE = 3, _('Done')
 
     shop_order_id = models.IntegerField(_('shop order id'), help_text='Shop order id')
-    customer_mail = models.EmailField (_('customer mail'), help_text='Customer e-mail address')
+    customer_mail = models.EmailField(_('customer mail'), help_text='Customer e-mail address')
     order_date = models.CharField(_('order date'), max_length=20)
     shipped_date = models.DateField(_('order date'), help_text='Date when order moved to Done status')
     status = models.PositiveSmallIntegerField(
@@ -57,7 +58,7 @@ class BookInstance(models.Model):
         primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this particular book across whole library")
     )
     book = models.ForeignKey("Book", on_delete=models.SET_NULL, null=True)
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, primary_key=True, blank=True)
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=True, blank=True)
     status = models.PositiveSmallIntegerField(
         choices=SellStatus.choices, default=SellStatus.IN_STOCK, blank=True, help_text=_('Book status')
     )

@@ -3,13 +3,10 @@ from django.contrib import admin
 from .models import Book, BookInstance, Order, OrderItems
 
 
-class BookInlineModelAdmin(admin.TabularInline):
-    model = Book
-
-
-class BooksInstanceInlineModelAdmin(admin.TabularInline):
+class BooksInstanceInlineModelAdmin(admin.StackedInline):
     """Defines format of inline book instance insertion (used in BookAdmin)"""
     model = BookInstance
+    # TODO Спросить у Ярика как делать так что бы добавленые Inlin'ы сохранялись без нужды добавлять изменения
 
 
 @admin.register(Book)
@@ -33,31 +30,18 @@ class BookInstanceModelAdmin(admin.ModelAdmin):
     """
     list_display = ["id", "book", "status", 'order']
     list_filter = ["status", "order"]
-    fieldsets = (
-        (None, {
-            'fields': ('book', 'imprint', 'id')
-        }),
-        # ('Availability', {
-        #     'fields': ('status', 'due_back', 'borrower')
-        # }),
-    )
 
 
 class OrderItemsInlineModelAdmin(admin.TabularInline):
     model = OrderItems
 
 
-class OrderInlineModelAdmin(admin.TabularInline):
-    model = Order
-
-
 @admin.register(Order)
 class OrderModelAdmin(admin.ModelAdmin):
     list_display = ['shop_order_id', 'customer_mail', 'order_date', 'shipped_date', 'status']
-    inlines = [OrderInlineModelAdmin]
-
-
-@admin.register(Order)
-class OrderModelAdmin(admin.ModelAdmin):
-    list_display = ['order', 'book', 'quantity']
     inlines = [OrderItemsInlineModelAdmin]
+
+
+@admin.register(OrderItems)
+class OrderItemsModelAdmin(admin.ModelAdmin):
+    list_display = ['order', 'book', 'quantity']

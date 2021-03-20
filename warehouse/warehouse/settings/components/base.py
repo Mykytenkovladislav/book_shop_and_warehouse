@@ -51,8 +51,7 @@ INSTALLED_APPS = [
     # 'dj_rest_auth.registration',
 
     # local apps
-    # "geo_data.apps.GeoDataConfig",
-    # "api.apps.ApiConfig",
+    'storehouse.apps.StorehouseConfig'
 ]
 
 MIDDLEWARE = [
