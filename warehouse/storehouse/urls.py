@@ -38,5 +38,7 @@ urlpatterns = [
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls'))
 ]
 
+
+
 if settings.DEBUG:
     urlpatterns += swagger_patterns
