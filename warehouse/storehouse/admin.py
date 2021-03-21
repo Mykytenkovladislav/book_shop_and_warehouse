@@ -38,8 +38,8 @@ class BookInstanceModelAdmin(admin.ModelAdmin):
      - filters that will be displayed in sidebar (list_filter)
      - grouping of fields into sections (fieldsets)
     """
-    list_display = ["id", "book", "status", 'order']
-    list_filter = ["status", "order"]
+    list_display = ["id", "book", "status", 'order_item']
+    list_filter = ["status", "order_item"]
 
 
 class OrderItemInlineModelAdmin(admin.TabularInline):
@@ -50,7 +50,7 @@ class OrderItemInlineModelAdmin(admin.TabularInline):
 @admin.register(Order)
 class OrderModelAdmin(admin.ModelAdmin):
     list_display = ['shop_order_id', 'customer_mail', 'order_date', 'shipped_date', 'status']
-    inlines = [OrderItemInlineModelAdmin, BooksInstanceInlineModelAdmin]
+    inlines = [OrderItemInlineModelAdmin]
 
 
 @admin.register(OrderItem)

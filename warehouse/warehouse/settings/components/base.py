@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from warehouse.settings import env
 from warehouse.settings.components import BASE_DIR
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -38,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # libs
-    # 'rest_framework',
+    'rest_framework',
     # 'rest_framework_gis',
     # 'drf_yasg',
 
@@ -84,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'warehouse.wsgi.application'
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -103,7 +101,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -116,3 +113,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# drm
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAdminUser',
+#     ],
+#     'PAGE_SIZE': 10
+# }

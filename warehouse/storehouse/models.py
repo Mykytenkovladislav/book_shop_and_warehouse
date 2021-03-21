@@ -68,7 +68,6 @@ class BookInstance(models.Model):
         primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this particular book across whole library")
     )
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, null=True, blank=True,
                                    related_name='in_order_item')
     status = models.PositiveSmallIntegerField(
