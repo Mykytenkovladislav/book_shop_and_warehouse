@@ -36,14 +36,24 @@ class Order(models.Model):
     shop_order_id = models.IntegerField(_('shop order id'), help_text='Shop order id')
     customer_mail = models.EmailField(_('customer mail'), help_text='Customer e-mail address')
     order_date = models.CharField(_('order date'), max_length=20)
-    shipped_date = models.DateField(_('order date'), help_text='Date when order moved to Done status')
+    shipped_date = models.DateField(_('shipped date'), help_text='Date when order moved to Done status')
     status = models.PositiveSmallIntegerField(
         choices=OrderStatus.choices, default=OrderStatus.WAITING, blank=True, help_text=_('Order status')
     )
 
     def __str__(self):
         """String for representing the Model object."""
-        return self.shop_order_id
+        return f'{self.shop_order_id}'
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField(_('quantity'), help_text='Books quantity')
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return f"{self.id} ({self.order.shop_order_id})"
 
 
 class BookInstance(models.Model):
@@ -57,8 +67,9 @@ class BookInstance(models.Model):
     id = models.UUIDField(  # noqa: A003
         primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this particular book across whole library")
     )
-    book = models.ForeignKey("Book", on_delete=models.SET_NULL, null=True)
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, null=True, blank=True)
+    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
+    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, null=True, blank=True)
     status = models.PositiveSmallIntegerField(
         choices=SellStatus.choices, default=SellStatus.IN_STOCK, blank=True, help_text=_('Book status')
     )
@@ -66,13 +77,3 @@ class BookInstance(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.id} ({self.book.title})"
-
-
-class OrderItems(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField(_('quantity'), help_text='Books quantity')
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return f"{self.id} ({self.order.shop_order_id})"

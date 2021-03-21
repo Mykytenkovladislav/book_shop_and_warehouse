@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Book, BookInstance, Order, OrderItems
+from .models import Book, BookInstance, Order, OrderItem
 
 
 class BooksInstanceInlineModelAdmin(admin.StackedInline):
@@ -32,16 +32,17 @@ class BookInstanceModelAdmin(admin.ModelAdmin):
     list_filter = ["status", "order"]
 
 
-class OrderItemsInlineModelAdmin(admin.TabularInline):
-    model = OrderItems
+class OrderItemInlineModelAdmin(admin.TabularInline):
+    model = OrderItem
 
 
 @admin.register(Order)
 class OrderModelAdmin(admin.ModelAdmin):
     list_display = ['shop_order_id', 'customer_mail', 'order_date', 'shipped_date', 'status']
-    inlines = [OrderItemsInlineModelAdmin]
+    inlines = [OrderItemInlineModelAdmin]
 
 
-@admin.register(OrderItems)
-class OrderItemsModelAdmin(admin.ModelAdmin):
+@admin.register(OrderItem)
+class OrderItemModelAdmin(admin.ModelAdmin):
     list_display = ['order', 'book', 'quantity']
+    inlines = [BooksInstanceInlineModelAdmin]
