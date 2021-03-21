@@ -35,19 +35,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # libs
     'rest_framework',
-    # 'rest_framework_gis',
-    # 'drf_yasg',
+    'drf_yasg',
 
-    # 'rest_framework.authtoken',
-    # 'dj_rest_auth',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
 
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'dj_rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
 
     # local apps
     'storehouse.apps.StorehouseConfig'
@@ -113,11 +113,3 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-# drm
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.IsAdminUser',
-#     ],
-#     'PAGE_SIZE': 10
-# }

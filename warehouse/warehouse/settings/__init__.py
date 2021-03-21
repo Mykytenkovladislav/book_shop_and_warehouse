@@ -21,6 +21,7 @@ base_settings = [
     "components/base.py",  # standard django settings
     "components/database.py",  # databases
     "components/static.py",
+    "components/rest.py",
 
     # Select the right env:
     "environments/%s.py" % ENVIRONMENT,

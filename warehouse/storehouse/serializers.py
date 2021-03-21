@@ -1,8 +1,10 @@
-from .models import Book, BookInstance, Order, OrderItem
+from rest_framework.views import APIView
 from rest_framework import serializers
 
+from .models import Book, BookInstance, Order, OrderItem
 
-class BookInstanceSerializer(serializers.ModelSerializer):
+
+class BookInstanceSerializer(serializers.ModelSerializer, APIView):
     class Meta:
         model = BookInstance
         fields = ('id', 'book', 'order_item', 'status',)
@@ -20,7 +22,10 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         many = True
         model = Book
-        fields = ('id', 'title', 'author', 'summary', 'isbn', 'language', 'genre', 'book_instance', 'price', )
+        fields = (
+            'id', 'title', 'author',
+            'summary', 'isbn', 'language', 'genre',
+            'price', 'book_instance')
 
 
 class OrderItemSerializer(serializers.ModelSerializer):

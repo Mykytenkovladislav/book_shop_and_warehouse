@@ -12,6 +12,9 @@ psycopg2-binary = "*"
 django-debug-toolbar = "*"
 django-silk = "*"
 djangorestframework = "*"
+drf-yasg = "*"
+dj-rest-auth = "*"
+django-allauth = "*"
 
 [dev-packages]
 
