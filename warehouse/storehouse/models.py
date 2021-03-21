@@ -69,7 +69,8 @@ class BookInstance(models.Model):
     )
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
-    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, null=True, blank=True)
+    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, null=True, blank=True,
+                                   related_name='in_order_item')
     status = models.PositiveSmallIntegerField(
         choices=SellStatus.choices, default=SellStatus.IN_STOCK, blank=True, help_text=_('Book status')
     )

@@ -1,12 +1,22 @@
+from django import forms
 from django.contrib import admin
 
 from .models import Book, BookInstance, Order, OrderItem
+
+
+class OrderItemForm(forms.ModelForm):
+    class Meta:
+        model = OrderItem
+        fields = '__all__'
+
+    order_items = forms.ModelMultipleChoiceField(queryset=OrderItem.objects.all())
 
 
 class BooksInstanceInlineModelAdmin(admin.StackedInline):
     """Defines format of inline book instance insertion (used in BookAdmin)"""
     model = BookInstance
     # TODO Спросить у Ярика как делать так что бы добавленые Inlin'ы сохранялись без нужды добавлять изменения
+    extra = 0
 
 
 @admin.register(Book)
@@ -34,12 +44,13 @@ class BookInstanceModelAdmin(admin.ModelAdmin):
 
 class OrderItemInlineModelAdmin(admin.TabularInline):
     model = OrderItem
+    extra = 0
 
 
 @admin.register(Order)
 class OrderModelAdmin(admin.ModelAdmin):
     list_display = ['shop_order_id', 'customer_mail', 'order_date', 'shipped_date', 'status']
-    inlines = [OrderItemInlineModelAdmin]
+    inlines = [OrderItemInlineModelAdmin, BooksInstanceInlineModelAdmin]
 
 
 @admin.register(OrderItem)
