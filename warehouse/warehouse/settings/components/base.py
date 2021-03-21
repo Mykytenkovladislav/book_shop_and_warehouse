@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from warehouse.settings import env
 from warehouse.settings.components import BASE_DIR
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -36,19 +35,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # libs
-    # 'rest_framework',
-    # 'rest_framework_gis',
-    # 'drf_yasg',
+    'rest_framework',
+    'drf_yasg',
 
-    # 'rest_framework.authtoken',
-    # 'dj_rest_auth',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
 
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'dj_rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
 
     # local apps
     'storehouse.apps.StorehouseConfig'
@@ -84,7 +83,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'warehouse.wsgi.application'
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -102,7 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
