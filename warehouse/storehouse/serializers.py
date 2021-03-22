@@ -17,15 +17,16 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class BookSerializer(serializers.HyperlinkedModelSerializer):
-    book_instance = BookInstanceSerializer(many=True)
-#TODO Узнать у Ярика как выводить bookintances соеденённые с Book
+    books = BookInstanceSerializer(source="bookinstance_set", many=True)
+
+    # TODO Узнать у Ярика как выводить bookintances соеденённые с Book
     class Meta:
         many = True
         model = Book
         fields = (
             'id', 'title', 'author',
             'summary', 'isbn', 'language', 'genre',
-            'price', 'book_instance')
+            'price', 'books')
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
