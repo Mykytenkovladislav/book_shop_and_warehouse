@@ -7,6 +7,16 @@ name = "pypi"
 django = "*"
 ipython = "*"
 psycopg2-binary = "*"
+django-environ = "*"
+django-split-settings = "*"
+django-debug-toolbar = "*"
+django-silk = "*"
+flake8 = "*"
+djangorestframework = "*"
+django-lifecycle = "*"
+dj-rest-auth = "*"
+django-allauth = "*"
+drf-yasg = "*"
 
 [dev-packages]
 

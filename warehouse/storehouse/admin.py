@@ -15,7 +15,6 @@ class OrderItemForm(forms.ModelForm):
 class BooksInstanceInlineModelAdmin(admin.StackedInline):
     """Defines format of inline book instance insertion (used in BookAdmin)"""
     model = BookInstance
-    # TODO Спросить у Ярика как делать так что бы добавленые Inlin'ы сохранялись без нужды добавлять изменения
     extra = 0
 
 

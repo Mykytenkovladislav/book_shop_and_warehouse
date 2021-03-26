@@ -3,8 +3,9 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.mail import send_mail
 
-from django_lifecycle import LifecycleModelMixin, hook, AFTER_UPDATE
+from django_lifecycle import LifecycleModelMixin, hook, AFTER_UPDATE, AFTER_CREATE
 
 User = get_user_model()
 
@@ -49,25 +50,23 @@ class Order(LifecycleModelMixin, models.Model):
         """String for representing the Model object."""
         return f'{self.shop_order_id}'
 
-    @hook(AFTER_UPDATE, when='status', changes_to='Done')
+    @hook(AFTER_UPDATE, when='status', changes_to=3)
     def order_status_done_email(self):
-        from django.core.mail import send_mail
-
         send_mail(
             subject="Your order was Done",
-            message="",
+            message="Your order was Done",
             from_email="admin@admin.com",  # This will have no effect is you have set DEFAULT_FROM_EMAIL in settings.py
-            recipient_list=[f'{self.customer_mail}'],  # This is a list
+            recipient_list=[f'{self.customer_mail}', ],  # This is a list
             fail_silently=False  # Set this to False so that you will be noticed in any exception raised
         )
 
-    @hook(AFTER_UPDATE, when='status', changes_to='Rejected')
+    @hook(AFTER_UPDATE, when='status', changes_to=4)
     def order_status_rejected_email(self):
         from django.core.mail import send_mail
 
         send_mail(
             subject="Your order was rejected",
-            message="",
+            message="Your order was rejected",
             from_email="admin@admin.com",  # This will have no effect is you have set DEFAULT_FROM_EMAIL in settings.py
             recipient_list=[f'{self.customer_mail}'],  # This is a list
             fail_silently=False  # Set this to False so that you will be noticed in any exception raised
