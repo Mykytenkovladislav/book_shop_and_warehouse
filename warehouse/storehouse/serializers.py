@@ -27,7 +27,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ('id', 'order', 'book', 'quantity',)
 
 
-class OrderSerializer(serializers.HyperlinkedModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     order_items = OrderItemSerializer(source="orderitem_set", many=True)
 
     class Meta:

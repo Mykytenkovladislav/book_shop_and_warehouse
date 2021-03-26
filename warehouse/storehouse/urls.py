@@ -39,6 +39,5 @@ urlpatterns = [
 ]
 
 
-
 if settings.DEBUG:
     urlpatterns += swagger_patterns

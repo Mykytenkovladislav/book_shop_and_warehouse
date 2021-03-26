@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.9.2"
+install:
+  - pip install pipenv
+  - pipenv install
+before_script:
+  - export DJANGO_SECRET_KEY='test_key'
+  - python manage.py migrate
+  - python manage.py collectstatic --noinput
+script:
+  - flake8 .
+#  - python manage.py test  # for running tests from tutorial

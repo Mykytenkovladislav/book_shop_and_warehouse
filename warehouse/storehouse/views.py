@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import Book, BookInstance, Order, OrderItem
 from .serializers import BookSerializer, BookInstanceSerializer, OrderSerializer, OrderItemSerializer
 from rest_framework import viewsets

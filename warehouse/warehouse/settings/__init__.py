@@ -22,6 +22,7 @@ base_settings = [
     "components/database.py",  # databases
     "components/static.py",
     "components/rest.py",
+    "components/email.py",
 
     # Select the right env:
     "environments/%s.py" % ENVIRONMENT,

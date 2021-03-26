@@ -21,16 +21,9 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
 RUN apt-get update
 
 # Install system dependencies
-RUN apt-get -y install \
-    gcc \
-    gettext \
-    libxml2-dev \
-    libxslt-dev \
-    libgdal-dev \
-    libproj-dev \
-    libgeos-dev \
-    libpq-dev \
-    python-dev
+#RUN apt-get -y install
+#    libpq-dev \
+#    python-dev
 
 # Install python dependencies
 RUN pip install -U --no-cache-dir pip \
@@ -56,8 +49,6 @@ RUN wget "https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VER
 # This is a special case. We need to run this script as an entry point:
 COPY ./docker/backend_warehouse/docker-entrypoint.sh ./docker/backend_warehouse/wait-for-command.sh ./docker/backend_warehouse/runserver.sh /
 RUN chmod +x /docker-entrypoint.sh /wait-for-command.sh /runserver.sh
-#COPY ./docker/backend_warehouse/runserver.sh /
-#RUN chmod +x /runserver.sh
 
 # This dir will become the mountpoint of development code:
 WORKDIR /code
