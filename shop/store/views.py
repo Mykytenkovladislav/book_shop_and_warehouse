@@ -11,14 +11,9 @@ from django.views import generic
 from store.forms import ContactForm, RegisterForm
 from django.contrib import messages
 
+from store.models import Book, Order, OrderItem
+
 User = get_user_model()
-
-
-def index(request):
-    return render(
-        request,
-        'index.html',
-    )
 
 
 class RegisterFormView(generic.FormView):
@@ -71,3 +66,9 @@ class UpdateProfileView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateV
     def get_object(self, queryset=None):
         user = self.request.user
         return user
+
+
+class BookListView(generic.ListView):
+    queryset = Book.objects.all().order_by('title')
+    template_name = 'index.html'
+    paginate_by = 10

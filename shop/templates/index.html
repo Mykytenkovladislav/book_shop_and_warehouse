@@ -1,14 +1,21 @@
 {% extends "base_generic.html" %}
 {% load static %}
-
 {% block content %}
-  <h1>Local Library Home</h1>
-
-  <p>Welcome to <em>LocalLibrary</em>, a very basic Django website developed as a <a
-      href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Tutorial_local_library_website">tutorial
-    example</a> on the Mozilla Developer Network.</p>
-  <p>The tutorial demonstrates how to create a Django skeleton website and application, define URL mappings, views
-    (including Generic List and Detail Views), models and templates.</p>
-
-
+    <div class="container">
+        <div class="row">
+            <!-- Blog Entries Column -->
+            <div class="col-md-8 mt-3 left">
+                {% for book in book_list %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ book.title }}</h2>
+                            <p class="card-text text-muted h6">{{ book.author }}</p>
+                            <p class="card-text">{{ book.summary }}</p>
+{#                            <a href="{% url 'post_detail' book.id %}" class="btn btn-primary">Read More &rarr;</a>#}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
