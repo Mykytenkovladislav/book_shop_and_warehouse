@@ -12,13 +12,16 @@ User = get_user_model()
 
 class Book(models.Model):
     """Model representing a book (but not a specific copy of a book)."""
+    id = models.UUIDField(  # noqa: A003
+        primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this particular book across whole library")
+    )
     title = models.CharField(_("title"), max_length=200)
     author = models.CharField(_("author"), max_length=200)
     summary = models.TextField(_("summary"), max_length=1000, help_text=_("Enter a brief description of the book"))
     isbn = models.CharField(_("ISBN"), max_length=13, help_text=_("13 character ISBN number"))
     language = models.CharField(_("language"), max_length=20)
     genre = models.CharField(_('genre'), max_length=200)
-    price = models.CharField(_('price'), max_length=20, help_text='Book price')
+    price = models.FloatField(_('price'), max_length=20, help_text='Book price')
 
     class Meta:
         ordering = ['title', 'author']
@@ -94,7 +97,7 @@ class BookInstance(models.Model):
     id = models.UUIDField(  # noqa: A003
         primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this particular book across whole library")
     )
-    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, null=True, blank=True,
                                    related_name='in_order_item')
     status = models.PositiveSmallIntegerField(

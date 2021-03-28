@@ -49,7 +49,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth.registration',
 
+    'widget_tweaks',
+
     # local apps
+    'store.apps.StoreConfig'
 ]
 
 MIDDLEWARE = [

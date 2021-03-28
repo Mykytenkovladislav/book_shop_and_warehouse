@@ -18,9 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import urlpatterns as staticfiles_urlpatterns
 
+from store.views import RegisterFormView, UpdateProfileView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('store/', include('store.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path("accounts/register/", RegisterFormView.as_view(), name="register"),
+    path('accounts/update_profile', UpdateProfileView.as_view(), name='update_profile'),
 ]
 
 if settings.DEBUG:
