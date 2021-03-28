@@ -17,6 +17,7 @@ django-lifecycle = "*"
 dj-rest-auth = "*"
 django-allauth = "*"
 drf-yasg = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 
