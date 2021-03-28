@@ -3,8 +3,8 @@ This file contains all the settings that defines the development server.
 SECURITY WARNING: don't run with debug turned on in production!
 """
 
-from warehouse.settings.components import BASE_DIR
-from warehouse.settings.components.base import env, MIDDLEWARE, INSTALLED_APPS
+from shop.settings.components import BASE_DIR
+from shop.settings.components.base import env, MIDDLEWARE, INSTALLED_APPS
 
 DEBUG = env("DJANGO_DEBUG", default=True)
 

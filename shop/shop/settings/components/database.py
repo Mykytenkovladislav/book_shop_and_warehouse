@@ -1,4 +1,4 @@
-from warehouse.settings import env
+from shop.settings import env
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

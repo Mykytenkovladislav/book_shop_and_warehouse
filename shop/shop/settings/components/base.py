@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from shop.settings import env
-from warehouse.settings.components import BASE_DIR
+from shop.settings.components import BASE_DIR
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
 
     # local apps
-    'storehouse.apps.StorehouseConfig'
 ]
 
 MIDDLEWARE = [
@@ -63,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'warehouse.urls'
+ROOT_URLCONF = 'shop.urls'
 
 TEMPLATES = [
     {
@@ -81,7 +80,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'warehouse.wsgi.application'
+WSGI_APPLICATION = 'shop.wsgi.application'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

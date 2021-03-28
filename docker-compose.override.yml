@@ -35,7 +35,7 @@ services:
 
   warehouse: &warehouse
     container_name: warehouse
-    env_file: ./config/.env
+    env_file: warehouse/config/.env
     build:
       target: development_build
       args:
@@ -51,7 +51,7 @@ services:
 
   shop: &shop
     container_name: shop
-    env_file: ./config/.env
+    env_file: shop/config/.env
     build:
       target: development_build
       args:

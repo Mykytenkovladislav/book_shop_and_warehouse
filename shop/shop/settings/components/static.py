@@ -1,4 +1,4 @@
-from warehouse.settings.components import BASE_DIR
+from shop.settings.components import BASE_DIR
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
