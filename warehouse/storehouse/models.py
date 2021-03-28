@@ -40,9 +40,12 @@ class Order(LifecycleModelMixin, models.Model):
         DONE = 3, _('Done')
         REJECTED = 4, _('Rejected')
 
+    id = models.UUIDField(  # noqa: A003
+        primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this order across whole library")
+    )
     shop_order_id = models.IntegerField(_('shop order id'), help_text='Shop order id')
     customer_mail = models.EmailField(_('customer mail'), help_text='Customer e-mail address')
-    order_date = models.CharField(_('order date'), max_length=20)
+    order_date = models.DateField(_('order date'), help_text='Date when order was created')
     shipped_date = models.DateField(_('shipped date'), help_text='Date when order moved to Done status')
     status = models.PositiveSmallIntegerField(
         choices=OrderStatus.choices, default=OrderStatus.WAITING, help_text=_('Order status')
