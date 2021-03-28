@@ -1,5 +1,6 @@
 import uuid
 
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django_lifecycle import LifecycleModelMixin, hook, AFTER_UPDATE
 from django.db import models
@@ -19,6 +20,13 @@ class Book(models.Model):
     genre = models.CharField(_('genre'), max_length=200)
     price = models.FloatField(_('price'), max_length=20, help_text='Book price')
 
+    class Meta:
+        ordering = ['title', 'author', 'price']
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.title
+
 
 class Order(LifecycleModelMixin, models.Model):
     """Model representing a customer order (but not a order items)."""
@@ -33,17 +41,18 @@ class Order(LifecycleModelMixin, models.Model):
     id = models.UUIDField(  # noqa: A003
         primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this order across whole library")
     )
-    customer_mail = models.EmailField(_('customer mail'), help_text='Customer e-mail address')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     order_date = models.DateField(_('order date'), help_text='Date when order was created')
-    shipped_date = models.DateField(_('shipped date'), help_text='Date when order moved to Done status')
+    shipped_date = models.DateField(_('shipped date'), null=True, blank=True,
+                                    help_text='Date when order moved to Done status')
     status = models.PositiveSmallIntegerField(
         choices=OrderStatus.choices, default=OrderStatus.IN_PROGRESS, help_text=_('Order status')
     )
-    comment = models.CharField(_('order date'), max_length=20, blank=True)
+    comment = models.CharField(_('comment'), max_length=20, blank=True)
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.customer_mail}'
+        return f'{self.id}'
 
     @hook(AFTER_UPDATE, when='status', changes_to=3)
     def order_status_done_email(self):
@@ -51,7 +60,7 @@ class Order(LifecycleModelMixin, models.Model):
             subject="Your order was sent",
             message="Your order was sent",
             from_email="admin@admin.com",  # This will have no effect is you have set DEFAULT_FROM_EMAIL in settings.py
-            recipient_list=[f'{self.customer_mail}', ],  # This is a list
+            recipient_list=[f'{self.user.EMAIL_FIELD}', ],  # This is a list
             fail_silently=False  # Set this to False so that you will be noticed in any exception raised
         )
 
@@ -63,4 +72,4 @@ class OrderItem(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f"{self.id}, ({self.order.customer_mail}), {self.book} "
+        return f"{self.id}, {self.book} "
