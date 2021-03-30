@@ -8,6 +8,13 @@
                     <p class="card-text text-muted h6">{{ book.author }}</p>
                     <p></p>
                     <p class="card-text ">{{ object.summary | safe }}</p>
+                    <p></p>
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'add_to_order' book.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-success" type="submit">Add to cart</button>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         </div>

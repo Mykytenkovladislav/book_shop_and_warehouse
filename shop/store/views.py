@@ -81,21 +81,22 @@ class BookDetailView(SuccessMessageMixin, generic.DetailView):
 
 
 @login_required
-def add_to_cart(request, pk):
+def add_to_order(request, pk):
     book = get_object_or_404(Book, pk=pk)
     current_user = request.user
     order, created = Order.objects.get_or_create(status=2, user=current_user,
                                                  defaults={'user': current_user, 'comment': 'added automatically'})
-    if OrderItem.objects.filter(book=book).exists():
-        book_order_item = OrderItem.objects.get(book=book)
+    if OrderItem.objects.filter(book=book, order=order).exists():
+        book_order_item = OrderItem.objects.get(book=book, order=order)
         book_order_item.quantity += 1
+        book_order_item.save()
         messages.success(request, "Item already in cart! We added increased books quantity to +1")
-        return redirect('store:index')
+        return redirect('index')
         #  TODO try both variants
         # return reverse_lazy('index')
     else:
         order_item = OrderItem.objects.create(order=order, book=book)
         messages.success(request, "Item added to the cart!")
-        return redirect('store:index')
+        return redirect('index')
         #  TODO try both variants
         # return reverse_lazy('index')
