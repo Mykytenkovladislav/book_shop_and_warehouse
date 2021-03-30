@@ -42,7 +42,7 @@ class Order(LifecycleModelMixin, models.Model):
         primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this order across whole library")
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    order_date = models.DateField(_('order date'), help_text='Date when order was created')
+    order_date = models.DateField(_('order date'), null=True, blank=True, help_text='Date when order was created')
     shipped_date = models.DateField(_('shipped date'), null=True, blank=True,
                                     help_text='Date when order moved to Done status')
     status = models.PositiveSmallIntegerField(
@@ -66,9 +66,9 @@ class Order(LifecycleModelMixin, models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField(_('quantity'), help_text='Books quantity')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
+    quantity = models.IntegerField(_('quantity'), default=1, help_text='Books quantity')
 
     def __str__(self):
         """String for representing the Model object."""

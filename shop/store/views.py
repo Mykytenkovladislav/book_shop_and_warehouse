@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
@@ -79,5 +80,22 @@ class BookDetailView(SuccessMessageMixin, generic.DetailView):
     template_name = 'store/book_details.html'
 
 
+@login_required
 def add_to_cart(request, pk):
-    book = get_object_or_404(Book, pk)
+    book = get_object_or_404(Book, pk=pk)
+    current_user = request.user
+    order, created = Order.objects.get_or_create(status=2, user=current_user,
+                                                 defaults={'user': current_user, 'comment': 'added automatically'})
+    if OrderItem.objects.filter(book=book).exists():
+        book_order_item = OrderItem.objects.get(book=book)
+        book_order_item.quantity += 1
+        messages.success(request, "Item already in cart! We added increased books quantity to +1")
+        return redirect('store:index')
+        #  TODO try both variants
+        # return reverse_lazy('index')
+    else:
+        order_item = OrderItem.objects.create(order=order, book=book)
+        messages.success(request, "Item added to the cart!")
+        return redirect('store:index')
+        #  TODO try both variants
+        # return reverse_lazy('index')
