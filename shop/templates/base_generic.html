@@ -2,8 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    {% block title %}<title>Local Library</title>{% endblock %}
+    {% block title %}<title>Local Store</title>{% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -69,11 +68,33 @@
                 <ul class="sidebar-nav">
                     {% if user.is_authenticated %}
                         <li>User: {{ user.get_username }}</li>
-                        <li><a href="{% url 'update_profile' %}?next={{ request.path }}">Update profile</a></li>
-                        <li><a href="{% url 'logout' %}?next={{ request.path }}">Logout</a></li>
+                        <li>
+                            <button type="button" class="btn btn-primary"
+                                    data-url="{% url 'update_profile' %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                Update profile
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-primary"
+                                    data-url="{% url 'logout' %}?next={{ request.path }}">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                Logout
+                            </button>
+                        </li>
                     {% else %}
-                        <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
-                        <li><a href="{% url 'register' %}?next={{ request.path }}">Register</a></li>
+                        <li>
+                            <button type="button" class="btn btn-primary"
+                                    data-url="{% url 'login' %}?next={{ request.path }}"><span
+                                    class="glyphicon glyphicon-plus"></span>Login
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-primary"
+                                    data-url="{% url 'register' %}?next={{ request.path }}"><span
+                                    class="glyphicon glyphicon-plus"></span>Register
+                            </button>
+                        </li>
                         </ul>
                     {% endif %}
 

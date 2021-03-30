@@ -72,3 +72,12 @@ class BookListView(generic.ListView):
     queryset = Book.objects.all().order_by('title')
     template_name = 'index.html'
     paginate_by = 10
+
+
+class BookDetailView(SuccessMessageMixin, generic.DetailView):
+    model = Book
+    template_name = 'store/book_details.html'
+
+
+def add_to_cart(request, pk):
+    book = get_object_or_404(Book, pk)
