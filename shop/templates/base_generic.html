@@ -47,10 +47,9 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-                    {#                    <li class="nav-item active">#}
-                    {#                        <a class="nav-link" href="{% url 'post_create' %}"> Create post <span#}
-                    {#                                class="sr-only">(current)</span></a>#}
-                    {#                    </li>#}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'order' %}">Cart</a>
+                    </li>
                     {#                    <li class="nav-item active">#}
                     {#                        <a class="nav-link" href="{% url 'user_posts' %}"> My posts <span#}
                     {#                                class="sr-only">(current)</span></a>#}
@@ -65,7 +64,6 @@
     <div class="row">
         <div class="col-sm-2">
             {% block sidebar %}
-
                 <ul class="sidebar-nav">
                     {% if user.is_authenticated %}
                         <li>User: {{ user.get_username }}</li>
@@ -76,21 +74,18 @@
                         <li><a href="{% url 'register' %}?next={{ request.path }}">Register</a></li>
                         </ul>
                     {% endif %}
-
                 <ul class="sidebar-nav">
                     <li>
                         <button type="button" class="btn btn-primary js-contact-ajax"
                                 data-url="{% url 'contact-ajax' %}">
                             <span class="glyphicon glyphicon-plus"></span>
-                            Contact Us Ajax
+                            Contact Us
                         </button>
                     </li>
                 </ul>
-
             {% endblock %}
         </div>
         <div class="col-sm-10 ">
-
             {% block content %}{% endblock %}
             {% block modal %}
                 <div class="modal fade" id="contact-ajax">
@@ -112,7 +107,6 @@
                             <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
                         {% endif %}
                     </ul>
-                    </nav>
                     </div>
                 {% endif %}
             {% endblock %}

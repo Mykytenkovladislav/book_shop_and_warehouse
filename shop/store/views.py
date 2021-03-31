@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,9 +10,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import generic
 
-from store.forms import ContactForm, RegisterForm
-from django.contrib import messages
-
+from store.forms import ContactForm, RegisterForm, OrderItemsForm
 from store.models import Book, Order, OrderItem
 
 User = get_user_model()
@@ -50,7 +49,7 @@ def contact_form_ajax(request):
             data['form_is_valid'] = False
     context = {'form': form}
     data['html_form'] = render_to_string(
-        template_name='include/contact_ajax.html',
+        template_name='includes/contact_ajax.html',
         context=context,
         request=request
     )
@@ -100,3 +99,57 @@ def add_to_order(request, pk):
         return redirect('index')
         #  TODO try both variants
         # return reverse_lazy('index')
+
+
+@login_required
+def order_items_list(request):
+    current_user = request.user
+    order, created = Order.objects.get_or_create(status=2, user=current_user,
+                                                 defaults={'user': current_user,
+                                                           'comment': 'added automatically'})
+    order_items = OrderItem.objects.filter(order__id=order.id)
+    return render(request, 'store/order_items_list.html', {'order': order, 'order_items': order_items})
+
+
+def save_order_item_form(request, form, template_name):
+    data = dict()
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+            order = Order.objects.get(status=2, user=request.user)
+            order_items = OrderItem.objects.filter(order__id=order.id)
+            data['html_order_items_list'] = render_to_string('includes/partial_order_items_list.html', {
+                'order_items': order_items
+            })
+        else:
+            data['form_is_valid'] = False
+    context = {'form': form}
+    data['html_form'] = render_to_string(template_name, context=context, request=request)
+    return JsonResponse(data)
+
+
+def order_item_update(request, pk):
+    order_item = get_object_or_404(OrderItem, pk=pk)
+    if request.method == 'POST':
+        form = OrderItemsForm(request.POST, instance=order_item)
+    else:
+        form = OrderItemsForm(instance=order_item)
+    return save_order_item_form(request, form, 'includes/partial_order_item_update.html')
+
+
+def order_items_delete(request, pk):
+    order_item = get_object_or_404(OrderItem, pk=pk)
+    data = dict()
+    if request.method == 'POST':
+        order_item.delete()
+        data['form_is_valid'] = True
+        order = Order.objects.get(status=2, user=request.user)
+        order_items = OrderItem.objects.filter(order__id=order.id)
+        data['html_order_items_list'] = render_to_string('includes/partial_order_items_list.html', {
+            'order_items': order_items
+        })
+    else:
+        context = {'order_item': order_item}
+        data['html_form'] = render_to_string('includes/partial_order_item_delete.html', context, request=request)
+    return JsonResponse(data)
