@@ -153,3 +153,8 @@ def order_items_delete(request, pk):
         context = {'order_item': order_item}
         data['html_form'] = render_to_string('includes/partial_order_item_delete.html', context, request=request)
     return JsonResponse(data)
+
+
+def order_send(request):
+    url = 'http://127.0.0.1:8000/book.json'
+    pass
