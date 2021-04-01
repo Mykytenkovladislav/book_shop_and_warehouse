@@ -157,4 +157,3 @@ def order_items_delete(request, pk):
 
 def order_send(request):
     url = 'http://127.0.0.1:8000/book.json'
-    pass

@@ -1,10 +1,9 @@
 import uuid
 
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.core.mail import send_mail
-
 from django_lifecycle import LifecycleModelMixin, hook, AFTER_UPDATE
 
 User = get_user_model()
@@ -46,11 +45,12 @@ class Order(LifecycleModelMixin, models.Model):
     shop_order_id = models.IntegerField(_('shop order id'), help_text='Shop order id')
     customer_mail = models.EmailField(_('customer mail'), help_text='Customer e-mail address')
     order_date = models.DateField(_('order date'), help_text='Date when order was created')
-    shipped_date = models.DateField(_('shipped date'), help_text='Date when order moved to Done status')
+    shipped_date = models.DateField(_('shipped date'), null=True, blank=True,
+                                    help_text='Date when order moved to Done status')
     status = models.PositiveSmallIntegerField(
         choices=OrderStatus.choices, default=OrderStatus.WAITING, help_text=_('Order status')
     )
-    comment = models.CharField(_('order date'), max_length=20, blank=True)
+    comment = models.CharField(_('comment'), max_length=20, blank=True)
 
     def __str__(self):
         """String for representing the Model object."""
