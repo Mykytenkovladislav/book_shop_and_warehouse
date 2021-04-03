@@ -1,9 +1,16 @@
-from django.urls import path
+from django.conf.urls import url
+from django.urls import path, include
+from rest_framework import routers
 
 from store.views import BookListView, BookDetailView, contact_form_ajax, add_to_order, order_item_update, \
-    order_items_list, order_items_delete, order_send
+    order_items_list, order_items_delete, order_send, OrderViewSet
+
+router = routers.DefaultRouter()
+
+router.register(r'orders_api', OrderViewSet)
 
 urlpatterns = [
+    url(r'api', include(router.urls)),
     path('', BookListView.as_view(), name='index'),
 
     path('contact_ajax/', contact_form_ajax, name='contact-ajax'),

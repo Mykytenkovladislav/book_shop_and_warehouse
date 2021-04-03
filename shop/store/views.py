@@ -11,9 +11,11 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import generic
+from rest_framework import viewsets
 
 from store.forms import ContactForm, RegisterForm, OrderItemsForm
 from store.models import Book, Order, OrderItem
+from store.serializers import OrderSerializer
 
 User = get_user_model()
 
@@ -158,7 +160,6 @@ def order_items_delete(request, pk):
 
 
 def order_send(request):
-
     url = 'http://warehouse:8002/orders.json'
     order = Order.objects.get(status=2, user=request.user)
     order_items = OrderItem.objects.filter(order__id=order.id)
@@ -184,3 +185,8 @@ def order_send(request):
         return reverse_lazy('index')
     else:
         return reverse_lazy('contact_ajax')
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer

@@ -1,5 +1,6 @@
 import uuid
 
+import requests
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db import models
@@ -65,6 +66,9 @@ class Order(LifecycleModelMixin, models.Model):
             fail_silently=False  # Set this to False so that you will be noticed in any exception raised
         )
 
+        url = 'http://0.0.0.0:8001/store/orders_api/'
+        requests.post(url=url, json={'id': f'{self.id}', 'status': '4'})
+
     @hook(AFTER_UPDATE, when='status', changes_to=4)
     def order_status_rejected_email(self):
         from django.core.mail import send_mail
@@ -76,6 +80,8 @@ class Order(LifecycleModelMixin, models.Model):
             recipient_list=[f'{self.customer_mail}'],  # This is a list
             fail_silently=False  # Set this to False so that you will be noticed in any exception raised
         )
+        url = 'http://0.0.0.0:8001/store/orders_api/'
+        requests.post(url=url, json={'id': f'{self.id}', 'status': '5'})
 
 
 class OrderItem(models.Model):
@@ -85,7 +91,7 @@ class OrderItem(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f"{self.id} ({self.order.customer_mail})"
+        return f"{self.id}"
 
 
 class BookInstance(models.Model):

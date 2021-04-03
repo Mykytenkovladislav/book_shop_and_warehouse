@@ -10,9 +10,8 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": timedelta(seconds=300),
         "args": (),
     },
-    "periodic": {
-        "task": "store.tasks.add",
-        "schedule": timedelta(seconds=5),
-        "args": (4, 5),
+    "periodical": {
+        "task": "store.tasks.book_sync",
+        "schedule": timedelta(seconds=10),
     },
 }

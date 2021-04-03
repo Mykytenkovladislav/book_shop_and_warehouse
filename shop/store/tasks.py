@@ -5,14 +5,8 @@ from store.models import Book
 
 
 @shared_task
-def add(x, y):
-    print("Here!")
-    return x + y
-
-
-@shared_task
 def book_sync():
-    url = 'http://127.0.0.1:8002/books'
+    url = 'http://warehouse:8002/books'
     response = requests.get(url=url).json()
 
     for counter, book in enumerate(response):
@@ -22,7 +16,8 @@ def book_sync():
             Book.objects.create(
                 id=book['id'],
                 title=book['title'],
-                author=book['summary'],
+                author=book['author'],
+                summary=book['summary'],
                 isbn=book['isbn'],
                 language=book['language'],
                 genre=book['genre'],
