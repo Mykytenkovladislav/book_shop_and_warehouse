@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from celery.schedules import crontab
+# from celery.schedules import crontab
 
 CELERY_TASK_RESULT_EXPIRES = 3600
 
@@ -11,7 +11,7 @@ CELERY_BEAT_SCHEDULE = {
         "args": (),
     },
     "periodic": {
-        "task": "shop.tasks.add",
+        "task": "store.tasks.add",
         "schedule": timedelta(seconds=5),
         "args": (4, 5),
     },

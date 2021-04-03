@@ -96,7 +96,7 @@ def add_to_order(request, pk):
         #  TODO try both variants
         # return reverse_lazy('index')
     else:
-        order_item = OrderItem.objects.create(order=order, book=book)
+        OrderItem.objects.create(order=order, book=book)
         messages.success(request, "Item added to the cart!")
         return redirect('index')
         #  TODO try both variants
@@ -161,14 +161,14 @@ def order_send(request):
     url = 'http://warehouse:8002/orders.json'
     order = Order.objects.get(status=2, user=request.user)
     order_items = OrderItem.objects.filter(order__id=order.id)
-    order_items_list= []
+    order_items_list = []
     for record in order_items:
         order_item = {
             'id': record.id,
             'order': record.order.id,
             'book': record.book.id,
             'quantity': record.quantity
-                      }
+        }
         order_items_list.append(order_item)
     data = {"id": order.id,
             "customer_mail": order.user.email,
