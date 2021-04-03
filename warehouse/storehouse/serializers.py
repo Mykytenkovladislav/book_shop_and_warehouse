@@ -32,4 +32,13 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('id', 'shop_order_id', 'customer_mail', 'order_date', 'shipped_date', 'status', 'order_items',)
+        fields = ('id', 'customer_mail', 'order_date', 'shipped_date', 'status', 'order_items',)
+
+    def create(self, validated_data):
+        order_items_validated_data = validated_data.pop('orderitem_set')
+        order = Order.objects.create(**validated_data)
+        order_items_serializer = self.fields['order_items']
+        for each in order_items_validated_data:
+            each['order'] = order
+        order_items = order_items_serializer.create(order_items_validated_data)
+        return order

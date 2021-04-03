@@ -42,7 +42,6 @@ class Order(LifecycleModelMixin, models.Model):
     id = models.UUIDField(  # noqa: A003
         primary_key=True, default=uuid.uuid4, help_text=_("Unique ID for this order across whole library")
     )
-    shop_order_id = models.IntegerField(_('shop order id'), help_text='Shop order id')
     customer_mail = models.EmailField(_('customer mail'), help_text='Customer e-mail address')
     order_date = models.DateField(_('order date'), help_text='Date when order was created')
     shipped_date = models.DateField(_('shipped date'), null=True, blank=True,
@@ -54,7 +53,7 @@ class Order(LifecycleModelMixin, models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.shop_order_id}'
+        return f'{self.id}'
 
     @hook(AFTER_UPDATE, when='status', changes_to=3)
     def order_status_done_email(self):
@@ -86,7 +85,7 @@ class OrderItem(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f"{self.id} ({self.order.shop_order_id})"
+        return f"{self.id} ({self.order.customer_mail})"
 
 
 class BookInstance(models.Model):

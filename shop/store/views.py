@@ -1,9 +1,11 @@
+import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
+from django.db.models.functions import datetime
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.template.loader import render_to_string
@@ -156,4 +158,26 @@ def order_items_delete(request, pk):
 
 
 def order_send(request):
-    url = 'http://127.0.0.1:8000/book.json'
+    url = 'http://warehouse:8000/orders.json'
+    order = Order.objects.get(status=2, user=request.user)
+    order_items = OrderItem.objects.filter(order__id=order.id)
+    order_items_list= []
+    for record in order_items:
+        order_item = {
+            'id': record.id,
+            'order': record.order.id,
+            'book': record.book.id,
+            'quantity': record.quantity
+                      }
+        order_items_list.append(order_item)
+    data = {"id": order.id,
+            "customer_mail": order.user.email,
+            "order_date": datetime.datetime.now(),
+            "order_items": order_items_list
+            }
+    responce = requests.post(url=url, data=data)
+    if responce.status_code == 201:
+        messages.success(request, "Item added to the cart!")
+        return reverse_lazy('index')
+    else:
+        return reverse_lazy('contact_ajax')

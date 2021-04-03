@@ -48,7 +48,7 @@ class OrderItemInlineModelAdmin(admin.TabularInline):
 
 @admin.register(Order)
 class OrderModelAdmin(admin.ModelAdmin):
-    list_display = ['shop_order_id', 'customer_mail', 'order_date', 'shipped_date', 'status']
+    list_display = ['customer_mail', 'order_date', 'shipped_date', 'status']
     inlines = [OrderItemInlineModelAdmin]
 
 

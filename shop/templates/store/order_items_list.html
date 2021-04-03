@@ -9,12 +9,16 @@
 {% block content %}
     <h1 class="page-header">Order Items</h1>
 
-    <p>
-        <button type="button" class="btn btn-primary " data-url="{% url 'order_send' %}">
-            <span class="glyphicon glyphicon-plus"></span>
-            Confirm order
-        </button>
-    </p>
+    {#    <p>#}
+    {#        <button type="button" class="btn btn-primary " data-url="{% url 'order_send' %}">#}
+    {#            <span class="glyphicon glyphicon-plus"></span>#}
+    {#            Confirm order#}
+    {#        </button>#}
+    <form method="post" action="{% url 'order_send' %}">
+        {% csrf_token %}
+        <button class="btn btn-success" type="submit">Send order</button>
+    </form>
+    {#    </p>#}
     <table class="table" id="order-table">
         <thead>
         <tr>

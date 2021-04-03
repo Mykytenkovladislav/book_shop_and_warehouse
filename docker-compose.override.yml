@@ -94,5 +94,25 @@ services:
     depends_on:
       - mailhog
 
+
+  celery:
+    <<: *shop
+    container_name: celery
+    environment:
+      C_FORCE_ROOT: 'true'
+      DATABASE_URL: 'postgresql://postgres:postgres@db:5432/dev_db'
+      DATABASE_HOST: 'db'
+      DATABASE_PORT: '5432'
+      REDIS_URL: 'redis://redis:6379/0'
+      REDIS_CACHE: 'redis:6379'
+      AMQP_URL: 'amqp://rabbitmq:5672'
+      CHECK_WEB: 'true'
+      WEB_HOST: 'web'
+      WEB_PORT: '8000'
+    depends_on:
+      - redis
+      - db
+    command: celery -A core worker -B -l INFO
+
 volumes:
   db-data:

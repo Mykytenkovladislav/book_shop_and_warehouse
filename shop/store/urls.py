@@ -13,4 +13,5 @@ urlpatterns = [
     path('order/send/', order_send, name='order_send'),
     path('order/<int:pk>/update/', order_item_update, name='order_update'),
     path('order/<int:pk>/delete/', order_items_delete, name='order_item_delete'),
+
 ]
