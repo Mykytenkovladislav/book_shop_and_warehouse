@@ -158,7 +158,7 @@ def order_items_delete(request, pk):
 
 
 def order_send(request):
-    url = 'http://warehouse:8000/orders.json'
+    url = 'http://warehouse:8002/orders.json'
     order = Order.objects.get(status=2, user=request.user)
     order_items = OrderItem.objects.filter(order__id=order.id)
     order_items_list= []

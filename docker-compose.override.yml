@@ -46,6 +46,8 @@ services:
     environment:
       DJANGO_DEBUG: 1
       DATABASE_HOST: 'db'
+    depends_on:
+      - db
     command: sh /runserver.sh
 
 
@@ -62,6 +64,8 @@ services:
     environment:
       DJANGO_DEBUG: 1
       DATABASE_HOST: 'db'
+    depends_on:
+      - db
     command: sh /runserver.sh
 
 
@@ -107,8 +111,8 @@ services:
       REDIS_CACHE: 'redis:6379'
       AMQP_URL: 'amqp://rabbitmq:5672'
       CHECK_WEB: 'true'
-      WEB_HOST: 'web'
-      WEB_PORT: '8000'
+      WEB_HOST: 'shop'
+      WEB_PORT: '8001'
     depends_on:
       - redis
       - db

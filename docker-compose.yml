@@ -11,7 +11,7 @@ services:
       - webnet
       - nginx_network
     expose:
-      - 8000
+      - 8002
     environment:
       DATABASE_PORT: '5432'
     env_file:
@@ -19,7 +19,7 @@ services:
     restart: on-failure
     command: sh /runserver.sh
     healthcheck:
-      test: [ "CMD", "curl", "--fail", "http://0.0.0.0:8000/admin/login/" ]
+      test: [ "CMD", "curl", "--fail", "http://0.0.0.0:8002/admin/login/" ]
       interval: 1m
       timeout: 5s
       retries: 2
