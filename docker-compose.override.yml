@@ -68,25 +68,6 @@ services:
       - db
     command: sh /runserver.sh
 
-
-  mailhog:
-    container_name: mailhog
-    image: mailhog/mailhog:latest
-    command: [ "-smtp-bind-addr", "0.0.0.0:25" ]
-    user: root
-    restart: on-failure
-    networks:
-      - webnet
-      - nginx_network
-    expose:
-      - 25
-      - 8025
-    healthcheck:
-      test: [ "CMD", "echo", "|", "telnet", "127.0.0.1 25" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   celery:
     <<: *shop
     container_name: celery
@@ -105,6 +86,25 @@ services:
       - redis
       - db
     command: celery -A shop worker -B -l INFO
+
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog:latest
+    command: [ "-smtp-bind-addr", "0.0.0.0:25" ]
+    user: root
+    restart: on-failure
+    networks:
+      - webnet
+      - nginx_network
+    expose:
+      - 25
+      - 8025
+    healthcheck:
+      test: [ "CMD", "echo", "|", "telnet", "127.0.0.1 25" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 
   nginx:

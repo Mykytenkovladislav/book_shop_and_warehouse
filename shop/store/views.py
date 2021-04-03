@@ -158,9 +158,11 @@ def order_items_delete(request, pk):
 
 
 def order_send(request):
+
     url = 'http://warehouse:8002/orders.json'
     order = Order.objects.get(status=2, user=request.user)
     order_items = OrderItem.objects.filter(order__id=order.id)
+
     order_items_list = []
     for record in order_items:
         order_item = {
@@ -175,8 +177,9 @@ def order_send(request):
             "order_date": datetime.datetime.now(),
             "order_items": order_items_list
             }
-    responce = requests.post(url=url, data=data)
-    if responce.status_code == 201:
+    response = requests.post(url=url, data=data)
+    if response.status_code == 201:
+        # TODO add changing order status after successfully 201 response
         messages.success(request, "Item added to the cart!")
         return reverse_lazy('index')
     else:
