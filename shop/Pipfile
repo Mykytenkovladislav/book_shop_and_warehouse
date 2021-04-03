@@ -18,6 +18,9 @@ dj-rest-auth = "*"
 django-allauth = "*"
 drf-yasg = "*"
 django-widget-tweaks = "*"
+redis = "*"
+django-redis = "*"
+celery = "*"
 
 [dev-packages]
 

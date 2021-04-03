@@ -131,3 +131,5 @@ dmypy.json
 # JetBrains
 .idea/
 warehouse/.idea
+/Pipfile
+/Pipfile.lock
