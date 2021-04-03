@@ -85,7 +85,7 @@ class Order(LifecycleModelMixin, models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     book = models.ForeignKey(Book, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(_('quantity'), help_text='Books quantity')
 
@@ -107,7 +107,7 @@ class BookInstance(models.Model):
     )
     book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, null=True, blank=True,
-                                   related_name='in_order_item')
+                                   related_name='order_item')
     status = models.PositiveSmallIntegerField(
         choices=SellStatus.choices, default=SellStatus.IN_STOCK, blank=True, help_text=_('Book status')
     )

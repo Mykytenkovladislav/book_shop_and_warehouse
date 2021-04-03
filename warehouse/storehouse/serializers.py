@@ -41,4 +41,4 @@ class OrderSerializer(serializers.ModelSerializer):
         for each in order_items_validated_data:
             each['order'] = order
         order_items_serializer.create(order_items_validated_data)
-        return order
+        return order, order_items_validated_data

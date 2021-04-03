@@ -162,7 +162,7 @@ def order_items_delete(request, pk):
 
 
 def order_send(request):
-    url = 'http://warehouse:8002/orders.json'
+    url = 'http://warehouse:8002/orders/'
     order = Order.objects.get(status=2, user=request.user)
     order_items = OrderItem.objects.filter(order__id=order.id)
 
@@ -170,7 +170,6 @@ def order_send(request):
     for record in order_items:
         order_item = {
             'id': record.id,
-            'order': str(record.order.id),
             'book': str(record.book.id),
             'quantity': record.quantity
         }
@@ -186,9 +185,9 @@ def order_send(request):
         order.status = 3
         order.save(update_fields=['status'])
         messages.success(request, "Item added to the cart!")
-        return reverse_lazy('index')
+        return redirect('index')
     else:
-        return reverse_lazy('contact_ajax')
+        return redirect('update_profile')
 
 
 class OrderViewSet(viewsets.ModelViewSet):
