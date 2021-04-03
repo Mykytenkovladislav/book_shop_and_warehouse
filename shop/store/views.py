@@ -1,3 +1,5 @@
+import json
+
 import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
@@ -168,19 +170,21 @@ def order_send(request):
     for record in order_items:
         order_item = {
             'id': record.id,
-            'order': record.order.id,
-            'book': record.book.id,
+            'order': str(record.order.id),
+            'book': str(record.book.id),
             'quantity': record.quantity
         }
         order_items_list.append(order_item)
-    data = {"id": order.id,
-            "customer_mail": order.user.email,
-            "order_date": datetime.datetime.now(),
-            "order_items": order_items_list
-            }
-    response = requests.post(url=url, data=data)
+    data = json.dumps(
+        {"id": str(order.id), "customer_mail": order.user.email,
+         "order_date": str(datetime.datetime.now().date()),
+         "order_items": order_items_list}
+    )
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(url=url, headers=headers, data=data)
     if response.status_code == 201:
-        # TODO add changing order status after successfully 201 response
+        order.status = 3
+        order.save(update_fields=['status'])
         messages.success(request, "Item added to the cart!")
         return reverse_lazy('index')
     else:

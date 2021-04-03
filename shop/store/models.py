@@ -54,6 +54,9 @@ class Order(LifecycleModelMixin, models.Model):
         """String for representing the Model object."""
         return f'{self.id}'
 
+    def order_id(self):
+        return self.id.__str__()
+
     @hook(AFTER_UPDATE, when='status', changes_to=3)
     def order_status_done_email(self):
         send_mail(
