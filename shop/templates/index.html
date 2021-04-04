@@ -1,6 +1,17 @@
 {% extends "base_generic.html" %}
 {% load static %}
 {% block content %}
+
+    <h3>Choose ordering by genre: </h3>
+    <label>
+        <select class='form-control' size="1" name="jumpit" onchange="document.location.href=this.value">
+            <option selected value="{% url 'index' %}">All</option>
+            {% for genre in genre_list %}
+                <option value="{% url 'genre-detail' genre.id %}">{{ genre.name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
     <div class="container">
         <div class="row">
             <!-- Blog Entries Column -->

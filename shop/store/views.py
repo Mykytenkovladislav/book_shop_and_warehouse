@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
+from django.core.paginator import Paginator
 from django.db.models.functions import datetime
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
@@ -16,7 +17,7 @@ from django.views import generic
 from rest_framework import viewsets
 
 from store.forms import ContactForm, RegisterForm, OrderItemsForm
-from store.models import Book, Order, OrderItem
+from store.models import Book, Order, OrderItem, Genre
 from store.serializers import OrderSerializer
 
 User = get_user_model()
@@ -78,6 +79,33 @@ class BookListView(generic.ListView):
     queryset = Book.objects.all().order_by('title')
     template_name = 'index.html'
     paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(BookListView, self).get_context_data(**kwargs)
+        p = Paginator(Book.objects.all().order_by('title'), self.paginate_by)
+        context['articles'] = p.page(context['page_obj'].number)
+        context['genre_list'] = Genre.objects.all()
+
+        return context
+
+
+def genre_detail(request, pk):
+    genre = get_object_or_404(Genre, pk=pk)
+    books = genre.book_set.all().order_by('title')
+    paginator = Paginator(books, 10)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    genre_list = Genre.objects.exclude(name=genre.name)
+
+    context = {
+        'genre': genre,
+        'page_obj': page_obj,
+        'genre_list': genre_list
+    }
+
+    return render(request, 'store/genre_detail_page.html', context)
 
 
 class BookDetailView(SuccessMessageMixin, generic.DetailView):

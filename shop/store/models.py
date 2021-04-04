@@ -2,9 +2,19 @@ import uuid
 
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
-from django_lifecycle import LifecycleModelMixin, hook, AFTER_UPDATE
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django_lifecycle import LifecycleModelMixin, hook, AFTER_UPDATE
+
+
+class Genre(models.Model):
+    name = models.CharField(_("name"), max_length=200)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
 
 class Book(models.Model):
@@ -17,7 +27,7 @@ class Book(models.Model):
     summary = models.TextField(_("summary"), max_length=1000, help_text=_("Enter a brief description of the book"))
     isbn = models.CharField(_("ISBN"), max_length=13, help_text=_("13 character ISBN number"))
     language = models.CharField(_("language"), max_length=20)
-    genre = models.CharField(_('genre'), max_length=200)
+    genre = models.ManyToManyField(Genre, verbose_name=_("genre"))
     price = models.FloatField(_('price'), max_length=20, help_text='Book price')
 
     class Meta:
@@ -26,6 +36,10 @@ class Book(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.title
+
+    def display_genre(self):
+        """Creates a string for the Genre. This is required to display genre in Admin."""
+        return ', '.join([genre.name for genre in self.genre.all()[:3]])
 
 
 class Order(LifecycleModelMixin, models.Model):
