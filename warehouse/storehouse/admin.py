@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 
-from .models import Book, BookInstance, Order, OrderItem
+from .models import Book, BookInstance, Order, OrderItem, Genre
 
 
 class OrderItemForm(forms.ModelForm):
@@ -18,6 +18,11 @@ class BooksInstanceInlineModelAdmin(admin.StackedInline):
     extra = 0
 
 
+@admin.register(Genre)
+class GenreAdmin(admin.ModelAdmin):
+    fields = ['name']
+
+
 @admin.register(Book)
 class BookModelAdmin(admin.ModelAdmin):
     """Administration object for Book models.
@@ -25,7 +30,7 @@ class BookModelAdmin(admin.ModelAdmin):
      - fields to be displayed in list view (list_display)
      - adds inline addition of book instances in book view (inlines)
     """
-    list_display = ['title', 'author', 'genre']
+    list_display = ['title', 'author', 'display_genre']
     inlines = [BooksInstanceInlineModelAdmin]
 
 

@@ -1,6 +1,7 @@
-from .models import Book, BookInstance, Order, OrderItem
-from .serializers import BookSerializer, BookInstanceSerializer, OrderSerializer, OrderItemSerializer
 from rest_framework import viewsets
+
+from .models import Book, BookInstance, Order, OrderItem, Genre
+from .serializers import BookSerializer, BookInstanceSerializer, OrderSerializer, OrderItemSerializer, GenreSerializer
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -21,3 +22,9 @@ class BookViewSet(viewsets.ModelViewSet):
 class BookInstanceViewSet(viewsets.ModelViewSet):
     queryset = BookInstance.objects.all().order_by('book__title')
     serializer_class = BookInstanceSerializer
+
+
+class GenreViewSet(viewsets.ModelViewSet):
+    '''ViewSet display all genres'''
+    queryset = Genre.objects.all().order_by('id')
+    serializer_class = GenreSerializer

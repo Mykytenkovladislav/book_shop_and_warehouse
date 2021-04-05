@@ -3,8 +3,8 @@ from django.conf.urls import url
 from django.urls import path, re_path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from rest_framework import routers
 from rest_framework import permissions
+from rest_framework import routers
 
 from storehouse import views
 
@@ -30,6 +30,7 @@ router.register(r'orders', views.OrderViewSet)
 router.register(r'order_items', views.OrderItemViewSet)
 router.register(r'books', views.BookViewSet)
 router.register(r'book_instances', views.BookInstanceViewSet)
+router.register(r'genre', views.GenreViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
@@ -37,7 +38,6 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls'))
 ]
-
 
 if settings.DEBUG:
     urlpatterns += swagger_patterns

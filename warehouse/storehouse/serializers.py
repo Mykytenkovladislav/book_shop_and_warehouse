@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from .models import Book, BookInstance, Order, OrderItem
+from .models import Book, BookInstance, Order, OrderItem, Genre
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ['url', 'id', 'name']
 
 
 class BookInstanceSerializer(serializers.ModelSerializer):
@@ -11,6 +17,7 @@ class BookInstanceSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.HyperlinkedModelSerializer):
     books = BookInstanceSerializer(source="bookinstance_set", many=True)
+    genre = GenreSerializer(read_only=True, many=True)
 
     class Meta:
         many = True
