@@ -39,7 +39,7 @@ def book_sync():
 
             for genre_resp in book['genre']:
                 genre, created = Genre.objects.get_or_create(name=genre_resp['name'])
-                genre_list.append([genre])
+                genre_list.append(genre.id)
 
             book = Book(
                 id=book['id'],
